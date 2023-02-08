@@ -4,6 +4,7 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Scanner;
 
+
 public class MovieCollection
 {
     private ArrayList<Movie> movies;
@@ -169,10 +170,17 @@ public class MovieCollection
 
         ArrayList<String> cast = new ArrayList<String>();
 
+
         for (int i = 0; i < movies.size(); i++)
         {
-            
+            cast.add(movies.get(i).getCast());
         }
+
+        for (int i = 0; i < cast.size(); i++)
+        {
+
+        }
+
 
     }
 
@@ -230,6 +238,54 @@ public class MovieCollection
 
     private void listGenres()
     {
+        String genres = "";
+        for (int i = 0; i < movies.size(); i++)
+        {
+            if (!genres.contains(movies.get(i).getGenres()))
+            {
+                genres += movies.get(i).getGenres();
+            }
+        }
+
+        String[] genreList = genres.split("\\|");
+
+        for (int i = 0; i < genreList.length; i++)
+        {
+            for (int j = i + 1; j < genreList.length; j++)
+            {
+                if(genreList[i].compareTo(genreList[j]) > 0)
+                {
+                    String temp = genreList[i];
+                    genreList[i] = genreList[j];
+                    genreList[j] = temp;
+                }
+            }
+        }
+
+        for (int i = 0; i < genreList.length; i++)
+        {
+            System.out.println(i + 1 + " " + genreList[i]);
+        }
+
+        Scanner s = new Scanner(System.in);
+        int choice  = s.nextInt();
+
+        ArrayList<Movie> movie = new ArrayList<Movie>();
+        for (int i = 0; i < movies.size(); i++)
+        {
+            if (movies.get(i).getGenres().equals(genreList[choice - 1]))
+            {
+                movie.add(movies.get(i));
+            }
+        }
+
+        for (int i = 0; i < movie.size(); i++)
+        {
+            System.out.println(i + 1 + " " + movie.get(i));
+
+        }
+        int choice2 = s.nextInt();
+        displayMovieInfo(movie.get(choice2 - 1));
 
     }
 
