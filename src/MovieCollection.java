@@ -2,6 +2,7 @@ import java.io.BufferedReader;
 import java.io.FileReader;
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Scanner;
 
 
@@ -239,32 +240,42 @@ public class MovieCollection
     private void listGenres()
     {
         String genres = "";
+        ArrayList<String> arr = new ArrayList<String>();
         for (int i = 0; i < movies.size(); i++)
         {
-            if (!genres.contains(movies.get(i).getGenres()))
-            {
-                genres += movies.get(i).getGenres();
-            }
+            genres += movies.get(i).getGenres();
+            genres += "|";
+
+        }
+        ArrayList<String> standIn = new ArrayList<String>();
+        String[] subs = genres.split("\\|");
+        for (String sub2: subs){
+            standIn.add(sub2);
         }
 
-        String[] genreList = genres.split("\\|");
-
-        for (int i = 0; i < genreList.length; i++)
-        {
-            for (int j = i + 1; j < genreList.length; j++)
-            {
-                if(genreList[i].compareTo(genreList[j]) > 0)
-                {
-                    String temp = genreList[i];
-                    genreList[i] = genreList[j];
-                    genreList[j] = temp;
+        for (int i = 0; i < standIn.size(); i ++){
+            for (int j = i + 1; j < standIn.size(); j ++){
+                if(standIn.get(i).compareTo(standIn.get(j)) > 0){
+                    String temp = standIn.get(i);
+                    standIn.set(i, standIn.get(j));
+                    standIn.set(j, temp);
                 }
             }
         }
 
-        for (int i = 0; i < genreList.length; i++)
+        ArrayList<String> genreList = new ArrayList<String>();
+        String check = "";
+        for (String sub : standIn){
+            if(!sub.equals(check)){
+                genreList.add(sub);
+                check = sub;
+            }
+        }
+        System.out.println(genreList);
+
+        for (int i = 0; i < genreList.size(); i++)
         {
-            System.out.println(i + 1 + " " + genreList[i]);
+            System.out.println(i + 1 + " " + genreList.get(i));
         }
 
         Scanner s = new Scanner(System.in);
@@ -273,7 +284,8 @@ public class MovieCollection
         ArrayList<Movie> movie = new ArrayList<Movie>();
         for (int i = 0; i < movies.size(); i++)
         {
-            if (movies.get(i).getGenres().equals(genreList[choice - 1]))
+            if (movies.get(i).getGenres().equals(genreList.get(i - 1)))
+
             {
                 movie.add(movies.get(i));
             }
